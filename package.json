@@ -24,7 +24,8 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "yt-converter": "^2.0.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.6",
@@ -51,5 +52,11 @@
     "vite": "^5.3.1",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.6.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
   }
 }
