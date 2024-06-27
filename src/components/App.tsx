@@ -1,44 +1,33 @@
-import { Video, Audio } from 'yt-converter'
 import { useState } from 'react'
+import { extractVideoId, fetchVideoData } from '../utils/Converter'
 
 function App() {
-  const [youtubeUrl, setYoutubeUrl] = useState<string>('')
-  const [convertedResult, setConvertedResult] = useState<string | null>(null)
-
+  const [youtubeUrl, setYoutubeUrl] = useState('')
+  const [convertedResult, setConvertedResult] = useState('')
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setYoutubeUrl(event.target.value)
   }
-
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    async function audio(url: string) {
-      const data = await Audio({
-        url,
-        onDownloading: (d) => console.log(d)
-      })
-
-      return data.message
+    const videoId = extractVideoId(youtubeUrl)
+    if (!videoId) {
+      alert('유효한 유튜브 주소를 입력해주세요.')
+      return
     }
-
-    try {
-      const result = await audio(youtubeUrl)
-      setConvertedResult(result)
-    } catch (error) {
-      console.error('Error converting video:', error)
-    }
+    const data = await fetchVideoData(videoId)
+    setConvertedResult(data)
   }
-
   return (
     <div className="relative overflow-hidden bg-white">
       <div className="h-screen sm:pb-40 sm:pt-24 lg:pb-48 lg:pt-40">
         <div className="relative mx-auto max-w-7xl px-4 pt-40">
           <div className="sm:max-w-lg">
             <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
-              유튜브 MP3 / MP4 다운로드
+              유튜브 MP3 다운로드
             </h1>
             <p className="mt-2 text-xl text-gray-500">
-              아래 입력창에 유튜브 주소를 입력하면 MP3 또는 MP4로 다운로드 받을
-              수 있습니다.
+              아래 입력창에 유튜브 주소를 입력하면 MP3로 다운로드 받을 수
+              있습니다.
             </p>
           </div>
           <div className="mt-12 sm:flex ">
@@ -61,18 +50,25 @@ function App() {
                   변환하기
                 </button>
               </form>
+
+              {convertedResult && (
+                <div className="mt-4 text-gray-700">
+                  <a
+                    href={convertedResult}
+                    download
+                    className="block w-full text-center px-4 py-2 text-white bg-slate-500 rounded-md hover:bg-slate-900 focus:outline-none focus:ring-2  focus:ring-opacity-50"
+                  >
+                    다운로드
+                  </a>
+                </div>
+              )}
             </div>
           </div>
-          {convertedResult && (
-            <div className="mt-4 text-gray-700">
-              변환된 결과: {convertedResult}
-            </div>
-          )}
           <div className="mt-6 text-sm text-gray-500">
-            <a className="pr-4">문의하기</a>
-            <a className="pr-4">저작권 관련 고지</a>
-            <a className="pr-4">이용약관</a>
-            <a className="pr-4">개인정보처리방침</a>
+            <a className="pr-4">
+              해당 서비스로 추출된 파일의 저작권은 모두 영상 제작자에게
+              있습니다. 비영리적 개인소장용으로만 사용해주세요.
+            </a>
           </div>
         </div>
       </div>
