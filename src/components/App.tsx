@@ -68,6 +68,9 @@ function App() {
             <a className="pr-4">
               해당 서비스로 추출된 파일의 저작권은 모두 영상 제작자에게 있으며,
               비영리적 개인소장용으로만 사용해주세요.
+              <br />
+              서비스를 이용함으로써 생기는 모든 법적 불이익에 개발자는 책임지지
+              않습니다.
             </a>
             <br />
             <a className="text-blue-500" href="https://github.com/withjihyuk">
